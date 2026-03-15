@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Knowledge Assistant</title>
+  <style>
+    /* Basic styling */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f4f4f4;
+      padding-top: 80px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    input {
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #answer {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>AI Knowledge Assistant</h1>
+
+  <input type="text" id="question" placeholder="Ask something...">
+  <button id="ask-btn">Ask</button>
+
+  <p id="answer"></p>
+
+  <script>
+    // Use addEventListener to avoid ReferenceError
+    document.getElementById("ask-btn").addEventListener("click", async function() {
+      let q = document.getElementById("question").value;
+
+      if(q.trim() === "") {
+        document.getElementById("answer").innerText = "Please type a question!";
+        return;
+      }
+
+      try {
+        let res = await fetch("/ask", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({question: q})
+        });
+
+        let data = await res.json();
+        document.getElementById("answer").innerText = data.answer;
+      } catch (err) {
+        document.getElementById("answer").innerText = "Error connecting to server.";
+        console.error(err);
+      }
+    });
+  </script>
+
+</body>
+</html>

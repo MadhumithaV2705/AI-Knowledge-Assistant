@@ -1,0 +1,4 @@
+Python is used for AI and data science.
+Flask is a lightweight Python web framework.
+Machine learning allows computers to learn from data.
+Artificial intelligence helps machines perform intelligent tasks.
