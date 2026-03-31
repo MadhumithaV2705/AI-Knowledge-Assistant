@@ -40,22 +40,6 @@ An intelligent web-based assistant that answers user queries using **Natural Lan
 4. Cosine similarity finds the closest match
 5. The most relevant answer is returned
 
-## 📂 Project Structure
-
-AI-Knowledge-Assistant/
-│
-├── app.py
-├── requirements.txt
-├── data/
-│   └── knowledge.txt
-├── templates/
-│   └── index.html
-├── images/
-│   ├── screenshot1.png
-│   ├── screenshot2.png
-│   └── screenshot3.png
-└── README.md
-
 ## ▶️ How to Run
 
 ```bash
