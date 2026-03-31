@@ -55,6 +55,7 @@ Open in browser:
 ## 💡 Example
 
 **Question:** What is Python used for?
+
 **Answer:** Python is used for AI and data science.
 
 ## 🎯 Use Cases
