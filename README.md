@@ -52,12 +52,6 @@ python app.py
 Open in browser:
 👉 http://127.0.0.1:5000
 
-## 💡 Example
-
-**Question:** What is Python used for?
-
-**Answer:** Python is used for AI and data science.
-
 ## 🎯 Use Cases
 
 * 📚 **Student Learning Assistant:** Helps students quickly get answers to academic questions.
