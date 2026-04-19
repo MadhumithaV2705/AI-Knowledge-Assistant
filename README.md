@@ -38,8 +38,8 @@ An intelligent question-answering web application that uses **semantic search** 
 ## ⚙️ Setup & Run
 
 ```bash
-git clone https://github.com/MadhumithaV2705/AI-Knowledge-Assistant.git
-cd AI-Knowledge-Assistant
+git clone https://github.com/MadhumithaV2705/AskIQ — Semantic Intelligence Assistant.git
+cd AskIQ — Semantic Intelligence Assistant
 python -m pip install -r requirements.txt
 python app.py
 ```
