@@ -1,109 +1,41 @@
-<<<<<<< HEAD
-# AI Knowledge Assistant — Upgraded
+# 🧠 AI Knowledge Assistant
 
-## Features Added
-- Semantic search with confidence scoring (color-coded %)
-- 6 topic domains: Python, ML, Data Structures, Web Dev, NLP, Electronics
-- Follow-up question suggestions after every answer
-- Chat history with session management
-- Topic sidebar with clickable filters
-- Typing indicator animation
-- Auto-resizing input textarea
-- Clear conversation button
-- REST API endpoints: /ask, /history, /topics, /clear
+An intelligent question-answering web application that uses **semantic search** and **natural language processing (NLP)** to answer queries across multiple technical domains. Built with **Python, Flask, and Sentence Transformers**.
 
-## Project Structure
-```
-AI-Knowledge-Assistant/
-├── app.py
-├── requirements.txt
-├── README.md
-└── templates/
-    └── index.html
-```
+## 📸 Preview
 
-## Setup & Run
+### 🏠 Home Page
+<img width="1897" height="907" alt="{105C21F7-5EFC-4E88-8BB6-D92A870C5384}" src="https://github.com/user-attachments/assets/1ee38ade-9759-44b2-958e-807df7d0423f" />
 
-### Step 1 — Install dependencies
-Open terminal in the project folder and run:
-```
-python -m pip install -r requirements.txt
-```
-
-### Step 2 — Run the app
-```
-python app.py
-```
-
-### Step 3 — Open browser
-Go to: http://127.0.0.1:5000
-
-## API Endpoints
-| Method | Route    | Description                        |
-|--------|----------|------------------------------------|
-| POST   | /ask     | Ask a question, returns answer     |
-| GET    | /topics  | Returns list of knowledge topics   |
-| GET    | /history | Returns current session history    |
-| POST   | /clear   | Clears session chat history        |
-
-## How It Works
-1. Knowledge sentences are pre-embedded at startup using MiniLM-L6-v2
-2. User question is embedded in real-time
-3. Cosine similarity finds the most relevant sentences
-4. Confidence score shows how well the answer matches
-5. Follow-up suggestions are generated based on detected topic
-
-## What Makes It Interview-Worthy
-- Real semantic search (not keyword matching)
-- RESTful API design with proper status codes
-- Session management
-- Modular knowledge base (easy to extend)
-- Confidence scoring with visual feedback
-- Production-style UI with proper UX patterns
-=======
-# 🤖 AI Knowledge Assistant
-
-An intelligent web-based assistant that answers user queries using **Natural Language Processing (NLP)** and **semantic similarity**. This project demonstrates how machines understand user questions and return meaningful answers from a custom knowledge base.
+### 📊 Answer with Confidence Score
+<img width="1901" height="906" alt="{2E8B0F80-0A33-470C-85BA-55AF6A12C436}" src="https://github.com/user-attachments/assets/af9e2141-129c-41cf-82a6-92d8936a784a" />
 
 ## 🚀 Features
 
-* 🔍 Semantic search using sentence embeddings
-* ⚡ Real-time question answering
-* 🧠 NLP-based understanding (not keyword matching)
-* 🌐 Simple and interactive web interface
-* 📂 Custom knowledge base support
+- 🔍 Semantic search (meaning-based, not keyword-based)
+- 📊 Confidence scoring with color indicators
+- 🗂️ 6 knowledge domains (Python, ML, DS, Web, NLP, Electronics)
+- 💡 Follow-up question suggestions
+- 🌐 REST API endpoints
+- 📱 Responsive design
 
 ## 🛠️ Tech Stack
 
-* **Backend:** Flask (Python)
-* **NLP Model:** sentence-transformers
-* **Machine Learning:** scikit-learn (cosine similarity)
-* **Frontend:** HTML, CSS, JavaScript
-* **Tools:** VS Code, GitHub
+- **Backend:** Python, Flask  
+- **AI Model:** sentence-transformers (all-MiniLM-L6-v2)  
+- **Similarity:** Cosine similarity (scikit-learn)  
+- **Frontend:** HTML, CSS, JavaScript  
+- **Processing:** NumPy  
 
-## 📸 Working Demo
+## 🧠 How It Works
 
-### 🏠 Home Page
+1. User enters a question  
+2. Question is converted into a vector (embedding)  
+3. Compared with precomputed knowledge embeddings  
+4. Cosine similarity finds the best match  
+5. Answer is returned with confidence score and follow-up suggestions  
 
-<img width="1910" height="918" alt="{5F0B8E80-B027-4839-A4ED-44DACA9B4E7A}" src="https://github.com/user-attachments/assets/c2ce3a17-4d42-42c0-89f1-55037db6524b" />
-
-### ❓ Asking a Question
-
-<img width="1914" height="916" alt="{4717305F-0F58-461D-96E5-1D025F578641}" src="https://github.com/user-attachments/assets/6d5fa698-dd34-4a9e-a96c-915ac67ec093" />
-
-### 💡 Answer Output
-
-<img width="1912" height="906" alt="{7ADFDED2-C4E5-4468-A0F1-DEB6DB9F8C59}" src="https://github.com/user-attachments/assets/95915a82-64c9-4379-9aab-07382ff9b09f" />
-
-## ⚙️ How It Works
-
-1. User enters a question
-2. The question is converted into a numerical vector (embedding)
-3. Compared with stored knowledge vectors
-4. Cosine similarity finds the closest match
-5. The most relevant answer is returned
-
-## ▶️ How to Run
+## ⚙️ Setup & Run
 
 ```bash
 git clone https://github.com/MadhumithaV2705/AI-Knowledge-Assistant.git
@@ -111,16 +43,58 @@ cd AI-Knowledge-Assistant
 python -m pip install -r requirements.txt
 python app.py
 ```
-
-Open in browser:
+## 🌐 Access the Application
+```
 👉 http://127.0.0.1:5000
+```
+
+## 🌐 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST   | /ask     | Ask a question |
+| GET    | /topics  | Get all topics |
+| GET    | /history | Get chat history |
+| POST   | /clear   | Clear chat |
+
+## 📊 Sample Response
+
+```json
+{
+  "answer": "Python is a high-level programming language...",
+  "topic": "Python",
+  "confidence": 87.4,
+  "followups": [
+    "What are Python decorators?",
+    "How does Python handle memory?"
+  ]
+}
+```
 
 ## 🎯 Use Cases
 
-* 📚 **Student Learning Assistant:** Helps students quickly get answers to academic questions.
-* 💬 **FAQ Automation:** Can be used to answer frequently asked questions in websites or apps.
-* 🏢 **Knowledge Base Search:** Enables organizations to search internal documents efficiently.
-* 🤖 **Chatbot Systems:** Can be integrated into chatbots for intelligent response generation.
-* 📖 **Technical Support:** Assists users by providing solutions to common technical queries.
-* 🧠 **AI-based Search Engine:** Demonstrates semantic search beyond keyword matching.
->>>>>>> 10b8c1787302fcff7120986b015bca8f2af1a520
+- Student learning assistant  
+- FAQ automation  
+- Knowledge base search  
+- Chatbot backend  
+- Technical support system  
+
+## 💡 Key Highlights
+
+- Real semantic search (not keyword-based)  
+- NLP using sentence embeddings  
+- Cosine similarity for accurate matching  
+- REST API design with Flask  
+- Clean frontend + backend integration  
+
+## 🔮 Future Improvements
+
+- Add PDF/document upload  
+- Integrate LLM APIs  
+- Cloud deployment  
+- User authentication  
+- Expand knowledge domains  
+
+## ⭐ Conclusion
+
+This project demonstrates a practical implementation of **semantic search and NLP** to build an intelligent, real-time question-answering system. It highlights strong understanding of **AI concepts, backend development, and full-stack integration**, making it a solid **interview-ready project**.

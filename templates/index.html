@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<<<<<<< HEAD
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Knowledge Assistant</title>
@@ -490,7 +489,7 @@
     <div class="logo-mark">
       <div class="logo-icon">🧠</div>
       <div>
-        <div class="logo-name">KnowledgeAI</div>
+        <div class="logo-name">AskIQ</div>
       </div>
     </div>
     <div class="logo-sub">semantic search assistant</div>
@@ -511,7 +510,7 @@
 <main class="main">
   <header class="header">
     <div>
-      <div class="header-title">AI Knowledge Assistant</div>
+      <div class="header-title">AskIQ</div>
       <div class="header-sub">Semantic search · Confidence scoring · Follow-up suggestions</div>
     </div>
     <div class="status-pill"><div class="pulse"></div>Model Ready</div>
@@ -564,133 +563,6 @@ async function loadTopics() {
     });
   } catch(e) {}
 }
-=======
-    <meta charset="UTF-8">
-    <title>AI Knowledge Assistant</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background: #ffffff;
-            color: #333;
-            padding: 30px;
-            border-radius: 15px;
-            width: 400px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-            color: #4a47a3;
-        }
-
-        p {
-            font-size: 14px;
-            color: #666;
-        }
-
-        input {
-            width: 90%;
-            padding: 12px;
-            margin-top: 15px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            outline: none;
-            font-size: 14px;
-        }
-
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            border: none;
-            background: #667eea;
-            color: white;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #5a67d8;
-        }
-
-        #answer {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f3f4f6;
-            border-radius: 8px;
-            font-weight: 500;
-            min-height: 40px;
-        }
-
-        .loader {
-            display: none;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #777;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>🤖 AI Assistant</h1>
-    <p>Ask anything and get intelligent answers</p>
-
-    <input type="text" id="question" placeholder="Type your question...">
-
-    <button onclick="ask()">Ask</button>
-
-    <div class="loader" id="loader">Thinking...</div>
-
-    <div id="answer"></div>
-</div>
-
-<script>
-async function ask(){
-    let q = document.getElementById("question").value;
-    let loader = document.getElementById("loader");
-    let answerBox = document.getElementById("answer");
-
-    if(q.trim() === ""){
-        answerBox.innerText = "Please enter a question!";
-        return;
-    }
-
-    loader.style.display = "block";
-    answerBox.innerText = "";
-
-    try {
-        let res = await fetch("/ask", {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({question: q})
-        });
-
-        let data = await res.json();
-        answerBox.innerText = data.answer;
-    } catch (error) {
-        answerBox.innerText = "Error connecting to server.";
-    }
-
-    loader.style.display = "none";
-}
-document.getElementById("question").addEventListener("keypress", function(e){
-    if(e.key === "Enter") ask();
-});
-</script>
->>>>>>> 10b8c1787302fcff7120986b015bca8f2af1a520
 
 function autoResize(el) {
   el.style.height = 'auto';
