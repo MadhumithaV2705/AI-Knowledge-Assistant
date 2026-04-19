@@ -1,14 +1,14 @@
-# 🧠 AI Knowledge Assistant
+# 🧠 AskIQ — Semantic Intelligence Assistant
 
 An intelligent question-answering web application that uses **semantic search** and **natural language processing (NLP)** to answer queries across multiple technical domains. Built with **Python, Flask, and Sentence Transformers**.
 
 ## 📸 Preview
 
 ### 🏠 Home Page
-<img width="1897" height="907" alt="{105C21F7-5EFC-4E88-8BB6-D92A870C5384}" src="https://github.com/user-attachments/assets/1ee38ade-9759-44b2-958e-807df7d0423f" />
+<img width="1904" height="905" alt="{5DB2FCEC-FDA2-4930-AED4-53C1703C64EB}" src="https://github.com/user-attachments/assets/34493025-f41d-4995-bd6b-d86723d3e197" />
 
 ### 📊 Answer with Confidence Score
-<img width="1901" height="906" alt="{2E8B0F80-0A33-470C-85BA-55AF6A12C436}" src="https://github.com/user-attachments/assets/af9e2141-129c-41cf-82a6-92d8936a784a" />
+<img width="1909" height="900" alt="{A0DD1089-3B96-4A06-B2D0-8B2D6A97245F}" src="https://github.com/user-attachments/assets/a8d81011-a3d9-48c7-ac93-cd1ee66afae1" />
 
 ## 🚀 Features
 
