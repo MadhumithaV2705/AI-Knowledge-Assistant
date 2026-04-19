@@ -1,86 +1,717 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Knowledge Assistant</title>
-  <style>
-    /* Basic styling */
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f4f4f4;
-      padding-top: 80px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Knowledge Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --accent: #7c6bff;
+    --accent2: #a78bfa;
+    --accent-glow: rgba(124,107,255,0.15);
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --text: #f0f0f8;
+    --muted: #6b6b80;
+    --mono: 'DM Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
 
-    h1 {
-      color: #333;
-    }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    input {
-      padding: 10px;
-      width: 300px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--display);
+    min-height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
 
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 10px;
-    }
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
 
-    button:hover {
-      background-color: #0056b3;
-    }
+  .logo {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
 
-    #answer {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #222;
-    }
-  </style>
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .logo-name {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+  }
+
+  .sidebar-section {
+    padding: 16px 20px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .topic-list {
+    padding: 0 12px;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .topic-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-bottom: 2px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .topic-item:hover { background: var(--surface2); color: var(--text); }
+  .topic-item.active { background: var(--accent-glow); color: var(--accent2); }
+
+  .topic-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+
+  .topic-item.active .topic-dot,
+  .topic-item:hover .topic-dot { background: var(--accent); }
+
+  .sidebar-bottom {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .stat {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .stat span { color: var(--accent2); font-weight: 500; }
+
+  .clear-btn {
+    width: 100%;
+    padding: 8px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    color: var(--muted);
+    font-family: var(--display);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 4px;
+  }
+
+  .clear-btn:hover { border-color: var(--red); color: var(--red); background: rgba(239,68,68,0.05); }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .header {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+  }
+
+  .header-title { font-size: 14px; font-weight: 500; }
+  .header-sub { font-size: 12px; color: var(--muted); font-family: var(--mono); margin-top: 2px; }
+
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--green);
+    font-family: var(--mono);
+  }
+
+  .pulse {
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    scroll-behavior: smooth;
+  }
+
+  .chat-area::-webkit-scrollbar { width: 4px; }
+  .chat-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .welcome {
+    text-align: center;
+    padding: 48px 20px;
+    animation: fadeUp 0.5s ease;
+  }
+
+  .welcome-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+
+  .welcome h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--text), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .welcome p {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 400px;
+    margin: 0 auto 28px;
+    line-height: 1.7;
+  }
+
+  .sample-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .sample-card {
+    padding: 12px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    font-family: var(--display);
+  }
+
+  .sample-card:hover {
+    border-color: var(--accent);
+    color: var(--accent2);
+    background: var(--accent-glow);
+  }
+
+  .msg {
+    display: flex;
+    gap: 12px;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .avatar.ai { background: var(--accent); }
+  .avatar.user-av { background: var(--surface2); border: 1px solid var(--border2); }
+
+  .bubble-wrap { max-width: 72%; }
+  .msg.user .bubble-wrap { align-items: flex-end; display: flex; flex-direction: column; }
+
+  .bubble {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .msg.user .bubble {
+    background: var(--accent);
+    color: #fff;
+    border-bottom-right-radius: 3px;
+  }
+
+  .msg.ai .bubble {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 3px;
+    color: var(--text);
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .msg.user .meta { justify-content: flex-end; }
+
+  .meta-time {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .topic-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-weight: 500;
+    background: var(--accent-glow);
+    color: var(--accent2);
+    border: 1px solid rgba(124,107,255,0.2);
+  }
+
+  .confidence-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .conf-label { font-size: 10px; color: var(--muted); font-family: var(--mono); }
+
+  .conf-track {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .conf-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .conf-value { font-size: 10px; font-family: var(--mono); font-weight: 500; }
+
+  .followups {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .fq-btn {
+    padding: 5px 10px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: var(--display);
+    transition: all 0.15s;
+  }
+
+  .fq-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent2);
+    background: var(--accent-glow);
+  }
+
+  .typing {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    border-bottom-left-radius: 3px;
+    width: fit-content;
+  }
+
+  .typing span {
+    width: 6px; height: 6px;
+    background: var(--muted);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); background: var(--accent); }
+  }
+
+  .input-bar {
+    padding: 16px 28px 20px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .input-wrap {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    padding: 10px 10px 10px 16px;
+    transition: border-color 0.15s;
+  }
+
+  .input-wrap:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  #question {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--display);
+    font-size: 14px;
+    resize: none;
+    max-height: 120px;
+    min-height: 24px;
+    line-height: 1.5;
+  }
+
+  #question::placeholder { color: var(--muted); }
+
+  .send-btn {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    color: white;
+    font-size: 16px;
+  }
+
+  .send-btn:hover { background: var(--accent2); transform: scale(1.05); }
+  .send-btn:active { transform: scale(0.97); }
+  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .input-hint {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--mono);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .topic-list::-webkit-scrollbar { width: 3px; }
+  .topic-list::-webkit-scrollbar-thumb { background: var(--border); }
+</style>
 </head>
 <body>
 
-  <h1>AI Knowledge Assistant</h1>
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">
+      <div class="logo-icon">🧠</div>
+      <div>
+        <div class="logo-name">KnowledgeAI</div>
+      </div>
+    </div>
+    <div class="logo-sub">semantic search assistant</div>
+  </div>
 
-  <input type="text" id="question" placeholder="Ask something...">
-  <button id="ask-btn">Ask</button>
+  <div class="sidebar-section">Topics</div>
+  <div class="topic-list" id="topicList"></div>
 
-  <p id="answer"></p>
+  <div class="sidebar-bottom">
+    <div class="stat-row">
+      <div class="stat">Queries: <span id="queryCount">0</span></div>
+      <div class="stat">Model: <span>MiniLM-L6</span></div>
+    </div>
+    <button class="clear-btn" onclick="clearHistory()">Clear conversation</button>
+  </div>
+</aside>
 
-  <script>
-    // Use addEventListener to avoid ReferenceError
-    document.getElementById("ask-btn").addEventListener("click", async function() {
-      let q = document.getElementById("question").value;
+<main class="main">
+  <header class="header">
+    <div>
+      <div class="header-title">AI Knowledge Assistant</div>
+      <div class="header-sub">Semantic search · Confidence scoring · Follow-up suggestions</div>
+    </div>
+    <div class="status-pill"><div class="pulse"></div>Model Ready</div>
+  </header>
 
-      if(q.trim() === "") {
-        document.getElementById("answer").innerText = "Please type a question!";
-        return;
-      }
+  <div class="chat-area" id="chatArea">
+    <div class="welcome" id="welcome">
+      <span class="welcome-icon">⚡</span>
+      <h2>Ask me anything</h2>
+      <p>I know about Python, Machine Learning, Data Structures, Web Dev, NLP, and Electronics. Try a question below.</p>
+      <div class="sample-grid">
+        <button class="sample-card" onclick="askSample(this)">What is machine learning?</button>
+        <button class="sample-card" onclick="askSample(this)">How does cosine similarity work?</button>
+        <button class="sample-card" onclick="askSample(this)">What is a hash table?</button>
+        <button class="sample-card" onclick="askSample(this)">Explain MOSFET transistors</button>
+        <button class="sample-card" onclick="askSample(this)">What is Flask used for?</button>
+        <button class="sample-card" onclick="askSample(this)">What are transformers in NLP?</button>
+      </div>
+    </div>
+  </div>
 
-      try {
-        let res = await fetch("/ask", {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({question: q})
-        });
+  <div class="input-bar">
+    <div class="input-wrap">
+      <textarea id="question" rows="1" placeholder="Ask a question..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="ask()" title="Send">➤</button>
+    </div>
+    <div class="input-hint">Enter to send · Shift+Enter for new line</div>
+  </div>
+</main>
 
-        let data = await res.json();
-        document.getElementById("answer").innerText = data.answer;
-      } catch (err) {
-        document.getElementById("answer").innerText = "Error connecting to server.";
-        console.error(err);
-      }
+<script>
+let queryCount = 0;
+
+async function loadTopics() {
+  try {
+    const res = await fetch('/topics');
+    const topics = await res.json();
+    const list = document.getElementById('topicList');
+    topics.forEach(t => {
+      const div = document.createElement('div');
+      div.className = 'topic-item';
+      div.innerHTML = `<div class="topic-dot"></div>${t}`;
+      div.onclick = () => {
+        document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
+        div.classList.add('active');
+        document.getElementById('question').value = `Tell me about ${t}`;
+        document.getElementById('question').focus();
+      };
+      list.appendChild(div);
     });
-  </script>
+  } catch(e) {}
+}
 
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ask(); }
+}
+
+function getTime() {
+  return new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+}
+
+function getConfColor(score) {
+  if (score >= 70) return '#22c55e';
+  if (score >= 45) return '#f59e0b';
+  return '#ef4444';
+}
+
+function addMessage(role, content, meta = {}) {
+  document.getElementById('welcome')?.remove();
+  const area = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+
+  if (role === 'user') {
+    div.innerHTML = `
+      <div class="avatar user-av">👤</div>
+      <div class="bubble-wrap">
+        <div class="bubble">${content}</div>
+        <div class="meta"><span class="meta-time">${getTime()}</span></div>
+      </div>`;
+  } else {
+    const confColor = getConfColor(meta.confidence || 0);
+    const followupHTML = (meta.followups || []).map(f =>
+      `<button class="fq-btn" onclick="askSample(this)">${f}</button>`
+    ).join('');
+
+    div.innerHTML = `
+      <div class="avatar ai">🧠</div>
+      <div class="bubble-wrap">
+        <div class="bubble">${content}</div>
+        <div class="meta">
+          <span class="meta-time">${getTime()}</span>
+          ${meta.topic ? `<span class="topic-badge">${meta.topic}</span>` : ''}
+        </div>
+        ${meta.confidence !== undefined ? `
+        <div class="confidence-bar">
+          <span class="conf-label">confidence</span>
+          <div class="conf-track">
+            <div class="conf-fill" style="width:${meta.confidence}%;background:${confColor}"></div>
+          </div>
+          <span class="conf-value" style="color:${confColor}">${meta.confidence}%</span>
+        </div>` : ''}
+        ${followupHTML ? `<div class="followups">${followupHTML}</div>` : ''}
+      </div>`;
+  }
+
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function showTyping() {
+  const area = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.id = 'typing-indicator';
+  div.innerHTML = `
+    <div class="avatar ai">🧠</div>
+    <div class="typing"><span></span><span></span><span></span></div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function removeTyping() {
+  document.getElementById('typing-indicator')?.remove();
+}
+
+async function ask() {
+  const input = document.getElementById('question');
+  const question = input.value.trim();
+  if (!question) return;
+
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  input.value = '';
+  input.style.height = 'auto';
+
+  addMessage('user', question);
+  showTyping();
+
+  try {
+    const res = await fetch('/ask', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({question})
+    });
+    const data = await res.json();
+    removeTyping();
+
+    if (data.error) {
+      addMessage('ai', data.error);
+    } else {
+      addMessage('ai', data.answer, {
+        topic: data.topic,
+        confidence: data.confidence,
+        followups: data.followups
+      });
+      queryCount++;
+      document.getElementById('queryCount').textContent = queryCount;
+    }
+  } catch(e) {
+    removeTyping();
+    addMessage('ai', 'Connection error. Make sure Flask server is running on port 5000.');
+  }
+
+  btn.disabled = false;
+  input.focus();
+}
+
+function askSample(el) {
+  document.getElementById('question').value = el.textContent;
+  ask();
+}
+
+async function clearHistory() {
+  await fetch('/clear', {method: 'POST'});
+  const area = document.getElementById('chatArea');
+  area.innerHTML = `
+    <div class="welcome" id="welcome">
+      <span class="welcome-icon">⚡</span>
+      <h2>Ask me anything</h2>
+      <p>I know about Python, Machine Learning, Data Structures, Web Dev, NLP, and Electronics.</p>
+      <div class="sample-grid">
+        <button class="sample-card" onclick="askSample(this)">What is machine learning?</button>
+        <button class="sample-card" onclick="askSample(this)">How does cosine similarity work?</button>
+        <button class="sample-card" onclick="askSample(this)">What is a hash table?</button>
+        <button class="sample-card" onclick="askSample(this)">Explain MOSFET transistors</button>
+        <button class="sample-card" onclick="askSample(this)">What is Flask used for?</button>
+        <button class="sample-card" onclick="askSample(this)">What are transformers in NLP?</button>
+      </div>
+    </div>`;
+  queryCount = 0;
+  document.getElementById('queryCount').textContent = 0;
+  document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
+}
+
+loadTopics();
+</script>
 </body>
 </html>

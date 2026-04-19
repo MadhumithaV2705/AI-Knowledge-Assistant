@@ -1,16 +1,15 @@
-async function ask(){
-    let question=document.getElementById("question").value;
-    let chat=document.getElementById("chatbox");
-    chat.innerHTML+= "<p><b>You:</b> "+question+"</p>";
+async function sendMessage() {
+    let input = document.getElementById("input").value;
 
-    let res=await fetch("/ask",{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify({question:question})
+    let response = await fetch("/ask", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({question: input})
     });
 
-    let data=await res.json();
-    chat.innerHTML+= "<p><b>AI:</b> "+data.answer+"</p>";
+    let data = await response.json();
+
+    document.getElementById("chat").innerHTML += 
+        `<p><b>You:</b> ${input}</p>
+         <p><b>AI:</b> ${data.answer}</p>`;
 }
