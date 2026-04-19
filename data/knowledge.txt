@@ -2,4 +2,8 @@ What is Python?|Python is a programming language used for AI and data science.
 Explain Flask?|Flask is a lightweight web framework in Python.
 What is machine learning?|Machine learning allows systems to learn from data.
 Uses of SQL?|SQL is used to manage and query databases.
+<<<<<<< HEAD
 What is AI?|Artificial intelligence enables machines to perform intelligent tasks.
+=======
+What is AI?|Artificial intelligence enables machines to perform intelligent tasks.
+>>>>>>> 10b8c1787302fcff7120986b015bca8f2af1a520
